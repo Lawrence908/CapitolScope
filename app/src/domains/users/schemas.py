@@ -445,7 +445,7 @@ class NotificationMarkReadRequest(BaseModel):
 
 class SubscriptionUpdate(BaseModel):
     """Subscription update schema."""
-    tier: str = Field(..., pattern="^(free|pro|premium|enterprise)$")
+    tier: str = Field(..., pattern="^(FREE|PRO|PREMIUM|ENTERPRISE)$")
 
 
 class SubscriptionResponse(BaseModel):

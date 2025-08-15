@@ -180,17 +180,37 @@ class APIClient {
   // Analytics
   async getTopTradingMembers(limit: number = 10): Promise<CongressMember[]> {
     const response = await this.client.get(`/api/v1/trades/analytics/top-trading-members?limit=${limit}`);
-    return response.data;
+    return response.data.data;
   }
 
   async getTopTradedTickers(limit: number = 10): Promise<Array<{ ticker: string; count: number; total_value: number }>> {
     const response = await this.client.get(`/api/v1/trades/analytics/top-traded-tickers?limit=${limit}`);
-    return response.data;
+    return response.data.data;
   }
 
   async getTradingActivity(period: 'daily' | 'weekly' | 'monthly' = 'daily'): Promise<Array<{ date: string; count: number; volume: number }>> {
     const response = await this.client.get(`/api/v1/congressional/analytics/trading-activity?period=${period}`);
-    return response.data;
+    return response.data.data;
+  }
+
+  async getPartyDistribution(): Promise<Record<string, number>> {
+    const response = await this.client.get('/api/v1/trades/analytics/party-distribution');
+    return response.data.data;
+  }
+
+  async getChamberDistribution(): Promise<Record<string, number>> {
+    const response = await this.client.get('/api/v1/trades/analytics/chamber-distribution');
+    return response.data.data;
+  }
+
+  async getAmountDistribution(): Promise<Record<string, number>> {
+    const response = await this.client.get('/api/v1/trades/analytics/amount-distribution');
+    return response.data.data;
+  }
+
+  async getVolumeOverTime(period: 'daily' | 'weekly' | 'monthly' = 'daily'): Promise<Array<{ date: string; count: number; volume: number }>> {
+    const response = await this.client.get(`/api/v1/trades/analytics/volume-over-time?period=${period}`);
+    return response.data.data;
   }
 }
 

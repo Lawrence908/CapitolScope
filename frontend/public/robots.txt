@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://capitolscope.chrislawrence.ca/sitemap.xml
+
+# Crawl delay (optional - helps prevent overwhelming your server)
+Crawl-delay: 1
+
+# Disallow specific paths if needed in the future
+# Disallow: /api/
+# Disallow: /admin/
+# Disallow: /private/

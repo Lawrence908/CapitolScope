@@ -6,7 +6,7 @@ import {
   ArrowTrendingUpIcon,
   ExclamationTriangleIcon,
 } from '@heroicons/react/24/outline';
-import { CongressionalTrade, CongressMember, DataQualityStats } from '../types';
+import type { CongressionalTrade, CongressMember, DataQualityStats } from '../types';
 import apiClient from '../services/api';
 
 const Dashboard: React.FC = () => {
@@ -30,8 +30,8 @@ const Dashboard: React.FC = () => {
         ]);
 
         setStats(statsResponse.data);
-        setRecentTrades(tradesResponse.items);
-        setTopMembers(membersResponse.data);
+        setRecentTrades(tradesResponse.items || []);
+        setTopMembers(membersResponse.data || []);
       } catch (err) {
         setError('Failed to load dashboard data');
         console.error('Dashboard error:', err);
@@ -96,36 +96,36 @@ const Dashboard: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 lg:space-y-6">
       {/* Welcome header */}
-      <div className="card p-6">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+      <div className="card p-4 lg:p-6">
+        <h2 className="text-xl lg:text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-2">
           Welcome to CapitolScope
         </h2>
-        <p className="text-gray-600 dark:text-gray-400">
+        <p className="text-sm lg:text-base text-neutral-600 dark:text-neutral-400">
           Explore congressional trading data with powerful filtering and analytics tools.
         </p>
       </div>
 
       {/* Stats cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
         {statCards.map((stat) => {
           const Icon = stat.icon;
           return (
             <Link
               key={stat.title}
               to={stat.link}
-              className="card p-6 hover:shadow-lg dark:hover:shadow-gray-900/20 transition-all duration-200"
+              className="card p-4 lg:p-6 hover:shadow-lg dark:hover:shadow-gray-900/20 transition-all duration-200"
             >
               <div className="flex items-center">
-                <div className={`${stat.color} p-3 rounded-lg`}>
-                  <Icon className="h-6 w-6 text-white" />
+                <div className={`p-2 lg:p-3 rounded-lg bg-neon-gradient` }>
+                  <Icon className="h-5 w-5 lg:h-6 lg:w-6 text-bg-primary" />
                 </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                <div className="ml-3 lg:ml-4">
+                  <p className="text-xs lg:text-sm font-medium text-neutral-600 dark:text-neutral-400">
                     {stat.title}
                   </p>
-                  <p className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+                  <p className="text-lg lg:text-2xl font-semibold text-neutral-900 dark:text-neutral-100">
                     {stat.value}
                   </p>
                 </div>
@@ -136,91 +136,101 @@ const Dashboard: React.FC = () => {
       </div>
 
       {/* Recent trades and top members */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
         {/* Recent trades */}
-        <div className="card p-6">
+        <div className="card p-4 lg:p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Recent Trades</h3>
+            <h3 className="text-base lg:text-lg font-semibold text-neutral-900 dark:text-neutral-100">Recent Trades</h3>
             <Link
               to="/trades"
-              className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300"
+              className="text-xs lg:text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300"
             >
               View all →
             </Link>
           </div>
-          <div className="space-y-4">
-            {recentTrades.map((trade, index) => (
-              <div key={trade.id || `trade-${index}`} className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-700 last:border-b-0">
+          <div className="space-y-3 lg:space-y-4">
+            {recentTrades && recentTrades.length > 0 ? recentTrades.map((trade, index) => (
+              <div key={trade.id || `trade-${index}`} className="flex items-center justify-between py-2 border-b border-primary-800/20 last:border-b-0">
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
+                  <p className="text-xs lg:text-sm font-medium text-neutral-900 dark:text-neutral-100 truncate">
                     {trade.member_name || 'Unknown'}
                   </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                  <p className="text-xs lg:text-sm text-neutral-600 dark:text-neutral-400">
                     {trade.ticker ? (
                       <span className="font-mono">{trade.ticker}</span>
                     ) : (
-                      <span className="text-gray-400 dark:text-gray-500">No ticker</span>
+                      <span className="text-neutral-500">No ticker</span>
                     )}
                     {' • '}
-                    <span className="capitalize">{trade.type}</span>
+                    <span className="capitalize">{trade.transaction_type || 'Unknown'}</span>
                   </p>
                 </div>
-                <div className="text-right">
-                  <p className="text-sm text-gray-900 dark:text-gray-100">{trade.amount}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                <div className="text-right ml-2">
+                  <p className="text-xs lg:text-sm text-neutral-900 dark:text-neutral-100">
+                    {trade.estimated_value ? `$${(trade.estimated_value / 100).toLocaleString()}` : 'N/A'}
+                  </p>
+                  <p className="text-xs text-neutral-600 dark:text-neutral-400">
                     {new Date(trade.transaction_date).toLocaleDateString()}
                   </p>
                 </div>
               </div>
-            ))}
+            )) : (
+              <div className="text-center py-4 text-neutral-600 dark:text-neutral-400">
+                <p className="text-sm">No recent trades available</p>
+              </div>
+            )}
           </div>
         </div>
 
         {/* Top trading members */}
-        <div className="card p-6">
+        <div className="card p-4 lg:p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Top Trading Members</h3>
+            <h3 className="text-base lg:text-lg font-semibold text-neutral-900 dark:text-neutral-100">Top Trading Members</h3>
             <Link
               to="/members"
-              className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300"
+              className="text-xs lg:text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300"
             >
               View all →
             </Link>
           </div>
-          <div className="space-y-4">
-            {topMembers.map((member, index) => (
-              <div key={member.id || `member-${index}`} className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-700 last:border-b-0">
+          <div className="space-y-3 lg:space-y-4">
+            {topMembers && topMembers.length > 0 ? topMembers.map((member, index) => (
+              <div key={member.id || `member-${index}`} className="flex items-center justify-between py-2 border-b border-primary-800/20 last:border-b-0">
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
+                  <p className="text-xs lg:text-sm font-medium text-neutral-900 dark:text-neutral-100 truncate">
                     {member.member_name}
                   </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    {member.member_party} • {member.member_state}
+                  <p className="text-xs lg:text-sm text-neutral-600 dark:text-neutral-400">
+                    {member.party} • {member.state}
                   </p>
                 </div>
-                <div className="text-right">
-                  <p className="text-sm text-gray-900 dark:text-gray-100">
-                    {member.total_trades || 0} trades
+                <div className="text-right ml-2">
+                  <p className="text-xs lg:text-sm text-neutral-900 dark:text-neutral-100">
+                    {member.trade_count || 0} trades
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{member.member_chamber}</p>
+                  <p className="text-xs text-neutral-600 dark:text-neutral-400">{member.chamber}</p>
                 </div>
               </div>
-            ))}
+            )) : (
+              <div className="text-center py-4 text-neutral-600 dark:text-neutral-400">
+                <p className="text-sm">No top members available</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
 
       {/* Party distribution */}
       {stats && (
-        <div className="card p-6">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+        <div className="card p-4 lg:p-6">
+          <h3 className="text-base lg:text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-4">
             Party Distribution
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {Object.entries(stats.party_distribution).map(([party, count]) => (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {stats.party_distribution && Object.entries(stats.party_distribution).map(([party, count]) => (
               <div key={party} className="text-center">
-                <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">{count}</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">{party}</div>
+                <div className="text-xl lg:text-2xl font-bold text-neutral-900 dark:text-neutral-100">{count.toString()}</div>
+                <div className="text-xs lg:text-sm text-neutral-600 dark:text-neutral-400">{party}</div>
               </div>
             ))}
           </div>
@@ -228,6 +238,6 @@ const Dashboard: React.FC = () => {
       )}
     </div>
   );
-};
-
+  };
+  
 export default Dashboard; 

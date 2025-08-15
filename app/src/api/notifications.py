@@ -621,7 +621,7 @@ async def get_notification_analytics(
     date_from: Optional[str] = Query(None, description="Start date (YYYY-MM-DD)"),
     date_to: Optional[str] = Query(None, description="End date (YYYY-MM-DD)"),
     notification_type: Optional[str] = Query(None, description="Filter by notification type"),
-    current_user: User = Depends(require_subscription(['premium', 'enterprise'])),
+    current_user: User = Depends(require_subscription(['PREMIUM', 'ENTERPRISE'])),
 ) -> ResponseEnvelope[Dict[str, Any]]:
     """
     Get notification analytics and engagement metrics.

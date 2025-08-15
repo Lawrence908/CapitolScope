@@ -9,6 +9,7 @@ from typing import Optional, List
 from datetime import datetime, timedelta
 import secrets
 import hashlib
+import base64
 
 from core.config import get_settings
 from domains.users.models import User
@@ -239,8 +240,15 @@ class EmailService:
         The CapitolScope Team
         """
     
+    def _get_logo_base64(self) -> str:
+        """Get logo as base64 data URL."""
+        # Commented out - email image embedding is unreliable across clients
+        # Using emoji approach instead which works everywhere
+        return ""
+
     def _create_welcome_html(self, user: User) -> str:
         """Create HTML content for welcome email."""
+        logo_data_url = self._get_logo_base64()
         return f"""
         <!DOCTYPE html>
         <html>
@@ -248,39 +256,98 @@ class EmailService:
             <meta charset="utf-8">
             <title>Welcome to CapitolScope</title>
             <style>
-                body {{ font-family: Arial, sans-serif; line-height: 1.6; color: #333; }}
-                .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
-                .header {{ background: #1f2937; color: white; padding: 20px; text-align: center; }}
-                .content {{ padding: 20px; background: #f9fafb; }}
-                .button {{ display: inline-block; background: #3b82f6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 20px 0; }}
-                .footer {{ text-align: center; padding: 20px; color: #6b7280; font-size: 14px; }}
+                body {{ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #2d3748; margin: 0; padding: 0; background-color: #f7fafc; }}
+                .container {{ max-width: 600px; margin: 0 auto; background: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }}
+                .header {{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px 20px; text-align: center; }}
+                .header h1 {{ margin: 0; font-size: 32px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; }}
+                .header h1 img {{ width: 40px; height: 40px; }}
+                .header p {{ margin: 10px 0 0 0; font-size: 16px; opacity: 0.9; }}
+                .content {{ padding: 40px 30px; }}
+                .welcome-text {{ font-size: 18px; color: #4a5568; margin-bottom: 30px; }}
+                .features {{ background: #f8fafc; padding: 25px; border-radius: 8px; margin: 25px 0; }}
+                .features h3 {{ color: #2d3748; margin-top: 0; font-size: 20px; }}
+                .features ul {{ margin: 0; padding-left: 20px; }}
+                .features li {{ margin: 8px 0; color: #4a5568; }}
+                .cta-section {{ text-align: center; margin: 35px 0; }}
+                .button {{ display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 6px rgba(102, 126, 234, 0.3); transition: transform 0.2s; }}
+                .button:hover {{ transform: translateY(-2px); }}
+                .stats {{ display: flex; justify-content: space-around; margin: 30px 0; text-align: center; }}
+                .stat {{ flex: 1; padding: 20px; }}
+                .stat-number {{ font-size: 24px; font-weight: 700; color: #667eea; }}
+                .stat-label {{ font-size: 14px; color: #718096; margin-top: 5px; }}
+                .footer {{ background: #2d3748; color: white; padding: 30px 20px; text-align: center; }}
+                .footer p {{ margin: 5px 0; }}
+                .social-links {{ margin: 20px 0; }}
+                .social-links a {{ color: #a0aec0; text-decoration: none; margin: 0 10px; }}
+                .highlight {{ background: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 20px 0; }}
+                .coming-soon {{ text-decoration: line-through; color: #a0aec0; }}
+                .coming-soon-label {{ background: #f7fafc; color: #718096; font-size: 12px; padding: 2px 6px; border-radius: 4px; margin-left: 8px; }}
             </style>
         </head>
         <body>
             <div class="container">
                 <div class="header">
-                    <h1>CapitolScope</h1>
-                    <p>Congressional Trading Transparency Platform</p>
+                    <h1>🏛️ CapitolScope</h1>
+                    <p>Your Window into Congressional Trading Activity</p>
                 </div>
                 <div class="content">
-                    <h2>Welcome to CapitolScope!</h2>
-                    <p>Hello {user.display_name or user.first_name or 'there'},</p>
-                    <p>Thank you for joining CapitolScope! We're excited to have you on board.</p>
-                    <p>With CapitolScope, you can:</p>
-                    <ul>
-                        <li>Track congressional trading activity in real-time</li>
-                        <li>Search and filter trades by member, ticker, and amount</li>
-                        <li>Get insights into trading patterns and trends</li>
-                        <li>Stay informed about market-moving congressional activity</li>
-                    </ul>
-                    <p style="text-align: center;">
-                        <a href="http://localhost:5173/dashboard" class="button">Get Started</a>
+                    <div class="welcome-text">
+                        <h2>Welcome aboard, {user.display_name or user.first_name or 'there'}! 👋</h2>
+                        <p>You've just joined the most comprehensive platform for tracking congressional trading activity. Get ready to discover insights that could transform your investment strategy.</p>
+                    </div>
+                    
+                    <div class="highlight">
+                        <strong>🎯 What you can do right now:</strong>
+                        <ul>
+                            <li>Browse real-time congressional trading data</li>
+                            <li>Search trades by member, company, or amount</li>
+                            <li style="text-decoration: line-through; color: #a0aec0;">Set up alerts for specific congress members <span style="background: #f7fafc; color: #718096; font-size: 12px; padding: 2px 6px; border-radius: 4px; margin-left: 8px;">Coming Soon</span></li>
+                            <li style="text-decoration: line-through; color: #a0aec0;">Analyze trading patterns and trends <span style="background: #f7fafc; color: #718096; font-size: 12px; padding: 2px 6px; border-radius: 4px; margin-left: 8px;">Coming Soon</span></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="features">
+                        <h3>🚀 Key Features Available to You</h3>
+                        <ul>
+                            <li><strong>Real-time Tracking:</strong> Monitor congressional trades as they happen</li>
+                            <li><strong>Advanced Search:</strong> Filter by member, ticker, date range, and transaction type</li>
+                            <li style="text-decoration: line-through; color: #a0aec0;"><strong>Portfolio Analysis:</strong> Compare congressional portfolios and performance <span style="background: #f7fafc; color: #718096; font-size: 12px; padding: 2px 6px; border-radius: 4px; margin-left: 8px;">Coming Soon</span></li>
+                            <li style="text-decoration: line-through; color: #a0aec0;"><strong>Market Insights:</strong> Understand the impact of congressional activity on markets <span style="background: #f7fafc; color: #718096; font-size: 12px; padding: 2px 6px; border-radius: 4px; margin-left: 8px;">Coming Soon</span></li>
+                            <li style="text-decoration: line-through; color: #a0aec0;"><strong>Custom Alerts:</strong> Get notified when specific members make trades <span style="background: #f7fafc; color: #718096; font-size: 12px; padding: 2px 6px; border-radius: 4px; margin-left: 8px;">Coming Soon</span></li>
+                            <li style="text-decoration: line-through; color: #a0aec0;"><strong>Data Export:</strong> Download trade data for your own analysis <span style="background: #f7fafc; color: #718096; font-size: 12px; padding: 2px 6px; border-radius: 4px; margin-left: 8px;">Coming Soon</span></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-number">500+</div>
+                            <div class="stat-label">Congress Members</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">23K+</div>
+                            <div class="stat-label">Trades Tracked</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">$2B+</div>
+                            <div class="stat-label">Total Volume</div>
+                        </div>
+                    </div>
+                    
+                    <div class="cta-section">
+                        <a href="https://capitolscope.chrislawrence.ca/dashboard" class="button">🚀 Start Exploring Now</a>
+                    </div>
+                    
+                    <p style="text-align: center; color: #718096; font-size: 14px;">
+                        Questions? Reach out to us at <a href="mailto:capitolscope@gmail.com" style="color: #667eea;">capitolscope@gmail.com</a>
                     </p>
-                    <p>If you have any questions or need help getting started, don't hesitate to reach out to our support team.</p>
                 </div>
                 <div class="footer">
-                    <p>© 2025 CapitolScope. All rights reserved.</p>
-                    <p>Welcome to the future of congressional transparency!</p>
+                    <p><strong>© 2025 CapitolScope</strong></p>
+                    <p>Empowering transparency in congressional trading</p>
+                    <div class="social-links">
+                        <a href="https://twitter.com/capitolscopeusa">Twitter</a> |
+                        <a href="https://capitolscope.chrislawrence.ca">Website</a>
+                    </div>
                 </div>
             </div>
         </body>
@@ -290,24 +357,39 @@ class EmailService:
     def _create_welcome_text(self, user: User) -> str:
         """Create text content for welcome email."""
         return f"""
-        Welcome to CapitolScope!
+        🏛️ Welcome to CapitolScope!
         
         Hello {user.display_name or user.first_name or 'there'},
         
-        Thank you for joining CapitolScope! We're excited to have you on board.
+        You've just joined the most comprehensive platform for tracking congressional trading activity! 🎉
         
-        With CapitolScope, you can:
-        - Track congressional trading activity in real-time
-        - Search and filter trades by member, ticker, and amount
-        - Get insights into trading patterns and trends
-        - Stay informed about market-moving congressional activity
+        🎯 What you can do right now:
+        • Browse real-time congressional trading data
+        • Search trades by member, company, or amount
+        • Set up alerts for specific congress members (Coming Soon)
+        • Analyze trading patterns and trends (Coming Soon)
         
-        Get started: http://localhost:5173/dashboard
+        🚀 Key Features Available to You:
+        • Real-time Tracking: Monitor congressional trades as they happen
+        • Advanced Search: Filter by member, ticker, date range, and transaction type
+        • Portfolio Analysis: Compare congressional portfolios and performance (Coming Soon)
+        • Market Insights: Understand the impact of congressional activity on markets (Coming Soon)
+        • Custom Alerts: Get notified when specific members make trades (Coming Soon)
+        • Data Export: Download trade data for your own analysis (Coming Soon)
         
-        If you have any questions or need help getting started, don't hesitate to reach out to our support team.
+        📊 Platform Stats:
+        • 500+ Congress Members tracked
+        • 23,000+ Trades monitored
+        • $2B+ Total trading volume analyzed
+        
+        🚀 Get Started: http://localhost:5173/dashboard
+        
+        Questions? Reach out to us at capitolscope@gmail.com
         
         Best regards,
         The CapitolScope Team
+        
+        © 2025 CapitolScope - Empowering transparency in congressional trading
         """
 
 

@@ -190,7 +190,7 @@ async def get_portfolio_performance(
     date_from: Optional[date] = Query(None, description="Start date for performance analysis"),
     date_to: Optional[date] = Query(None, description="End date for performance analysis"),
     period: str = Query("daily", description="Period type (daily, weekly, monthly)"),
-    current_user: User = Depends(require_subscription(['pro', 'premium', 'enterprise'])),
+    current_user: User = Depends(require_subscription(['PRO', 'PREMIUM', 'ENTERPRISE'])),
 ) -> ResponseEnvelope[PortfolioPerformanceResponse]:
     """
     Get portfolio performance metrics and analytics.
@@ -220,7 +220,7 @@ async def get_portfolio_analytics(
     portfolio_id: int = Path(..., description="Portfolio ID"),
     session: AsyncSession = Depends(get_db_session),
     analysis_type: str = Query("comprehensive", description="Type of analysis"),
-    current_user: User = Depends(require_subscription(['premium', 'enterprise'])),
+    current_user: User = Depends(require_subscription(['PREMIUM', 'ENTERPRISE'])),
 ) -> ResponseEnvelope[PortfolioAnalyticsResponse]:
     """
     Get advanced portfolio analytics and insights.
@@ -306,7 +306,7 @@ async def compare_portfolios(
     comparison_portfolio_id: int = Path(..., description="Portfolio to compare against"),
     session: AsyncSession = Depends(get_db_session),
     metrics: List[str] = Query(["return", "risk", "sharpe"], description="Metrics to compare"),
-    current_user: User = Depends(require_subscription(['premium', 'enterprise'])),
+    current_user: User = Depends(require_subscription(['PREMIUM', 'ENTERPRISE'])),
 ) -> ResponseEnvelope[PortfolioComparisonResponse]:
     """
     Compare two portfolios across various metrics.

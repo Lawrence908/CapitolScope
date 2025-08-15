@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { format } from 'date-fns';
+
 import {
   MagnifyingGlassIcon,
   FunnelIcon,
@@ -71,13 +71,7 @@ const TradeBrowser: React.FC = () => {
     setSearchQuery('');
   };
 
-  // Format currency amounts
-  const formatAmount = (amount: number | string | undefined | null) => {
-    if (amount === undefined || amount === null || amount === '') return 'N/A';
-    const num = typeof amount === 'number' ? amount : parseFloat(amount);
-    if (isNaN(num)) return 'N/A';
-    return `$${num.toLocaleString()}`;
-  };
+
 
   const formatCentsToDollars = (cents?: number | null) => {
     if (cents === undefined || cents === null || cents === 0) return 'N/A';
@@ -91,17 +85,7 @@ const TradeBrowser: React.FC = () => {
     }
   };
 
-  // Get party color
-  const getPartyColor = (party: string) => {
-    switch (party?.toLowerCase()) {
-      case 'republican':
-        return 'text-red-600 bg-red-50';
-      case 'democratic':
-        return 'text-blue-600 bg-blue-50';
-      default:
-        return 'text-gray-600 bg-gray-50';
-    }
-  };
+
 
   // Get transaction type icon and color
   const getTransactionTypeStyle = (type: string) => {
@@ -119,32 +103,32 @@ const TradeBrowser: React.FC = () => {
 
   // Helper for party badge
   const getPartyBadge = (party: string | null | undefined) => {
-    if (!party) return <span className="inline-block px-2 py-1 text-xs rounded bg-gray-400 text-white font-semibold" aria-label="Unknown party">Unknown</span>;
+    if (!party) return <span className="inline-block px-2 py-1 text-xs rounded-full bg-neutral-600/20 border border-neutral-500/30 text-neutral-300 font-medium shadow-sm" aria-label="Unknown party">Unknown</span>;
     switch (party.toLowerCase()) {
       case 'democratic':
       case 'd':
-        return <span className="inline-block px-2 py-1 text-xs rounded bg-blue-600 text-white font-semibold" aria-label="Democratic">Democratic</span>;
+        return <span className="inline-block px-2 py-1 text-xs rounded-full bg-primary-600/20 border border-primary-500/40 text-primary-300 font-medium shadow-sm shadow-primary-500/20" aria-label="Democratic">Democratic</span>;
       case 'republican':
       case 'r':
-        return <span className="inline-block px-2 py-1 text-xs rounded bg-red-600 text-white font-semibold" aria-label="Republican">Republican</span>;
+        return <span className="inline-block px-2 py-1 text-xs rounded-full bg-secondary-600/20 border border-secondary-500/40 text-secondary-300 font-medium shadow-sm shadow-secondary-500/20" aria-label="Republican">Republican</span>;
       case 'independent':
       case 'i':
-        return <span className="inline-block px-2 py-1 text-xs rounded bg-gray-700 text-white font-semibold" aria-label="Independent">Independent</span>;
+        return <span className="inline-block px-2 py-1 text-xs rounded-full bg-neutral-600/20 border border-neutral-500/30 text-neutral-300 font-medium shadow-sm" aria-label="Independent">Independent</span>;
       default:
-        return <span className="inline-block px-2 py-1 text-xs rounded bg-gray-500 text-white font-semibold" aria-label={party}>{party}</span>;
+        return <span className="inline-block px-2 py-1 text-xs rounded-full bg-neutral-600/20 border border-neutral-500/30 text-neutral-300 font-medium shadow-sm" aria-label={party}>{party}</span>;
     }
   };
 
   // Helper for chamber badge
   const getChamberBadge = (chamber: string | null | undefined) => {
-    if (!chamber) return <span className="inline-block px-2 py-1 text-xs rounded bg-gray-400 text-white font-semibold" aria-label="Unknown chamber">Unknown</span>;
+    if (!chamber) return <span className="inline-block px-2 py-1 text-xs rounded-full bg-neutral-600/20 border border-neutral-500/30 text-neutral-300 font-medium shadow-sm" aria-label="Unknown chamber">Unknown</span>;
     switch (chamber.toLowerCase()) {
       case 'senate':
-        return <span className="inline-block px-2 py-1 text-xs rounded bg-purple-700 text-white font-semibold" aria-label="Senate">Senate</span>;
+        return <span className="inline-block px-2 py-1 text-xs rounded-full bg-primary-600/20 border border-primary-500/40 text-primary-300 font-medium shadow-sm shadow-primary-500/20" aria-label="Senate">Senate</span>;
       case 'house':
-        return <span className="inline-block px-2 py-1 text-xs rounded bg-green-700 text-white font-semibold" aria-label="House">House</span>;
+        return <span className="inline-block px-2 py-1 text-xs rounded-full bg-secondary-600/20 border border-secondary-500/40 text-secondary-300 font-medium shadow-sm shadow-secondary-500/20" aria-label="House">House</span>;
       default:
-        return <span className="inline-block px-2 py-1 text-xs rounded bg-gray-500 text-white font-semibold" aria-label={chamber}>{chamber}</span>;
+        return <span className="inline-block px-2 py-1 text-xs rounded-full bg-neutral-600/20 border border-neutral-500/30 text-neutral-300 font-medium shadow-sm" aria-label={chamber}>{chamber}</span>;
     }
   };
 
@@ -169,28 +153,28 @@ const TradeBrowser: React.FC = () => {
   const safeString = (val: string | null | undefined) => (typeof val === 'string' ? val : '');
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 lg:space-y-6">
       {/* Header with search and filters */}
-      <div className="card p-6">
+      <div className="card p-4 lg:p-6">
         <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
           <div>
-            <h2 className="text-xl font-semibold text-white">Congressional Trades</h2>
-            <p className="text-sm text-gray-600 mt-1">
+            <h2 className="text-lg lg:text-xl font-semibold text-neutral-900 dark:text-white">Congressional Trades</h2>
+            <p className="text-xs lg:text-sm text-neutral-600 dark:text-neutral-400 mt-1">
               {trades?.total ? `${trades.total.toLocaleString()} total trades` : 'Loading...'}
             </p>
             {trades && trades.total > 0 && (
-              <div className="mt-2 flex flex-wrap gap-4 text-xs text-gray-500 dark:text-gray-400">
+              <div className="mt-2 flex flex-wrap gap-2 lg:gap-4 text-xs text-neutral-600 dark:text-neutral-400">
                 <span>📊 {trades.items.filter(t => t.transaction_type === 'P').length} purchases</span>
                 <span>📉 {trades.items.filter(t => t.transaction_type === 'S').length} sales</span>
                 <span>💰 {trades.items.filter(t => t.amount_exact && t.amount_exact >= 1000000).length} major trades</span>
                 <span>👥 {new Set(trades.items.map(t => t.member_name)).size} members</span>
                 {filters.amount_range && (
-                  <span className="text-blue-600 dark:text-blue-400">
+                  <span className="text-primary-600 dark:text-primary-400">
                     🔍 Filtered by amount range
                   </span>
                 )}
                 {filterLoading && (
-                  <span className="flex items-center text-blue-600 dark:text-blue-400">
+                  <span className="flex items-center text-primary-600 dark:text-primary-400">
                     <div className="animate-spin rounded-full h-3 w-3 border-b border-current mr-1"></div>
                     Updating...
                   </span>
@@ -199,25 +183,25 @@ const TradeBrowser: React.FC = () => {
             )}
           </div>
           
-          <div className="flex gap-2">
+          <div className="flex gap-2 w-full sm:w-auto">
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className="btn-secondary flex items-center gap-2"
+              className="btn-secondary flex items-center gap-2 flex-1 sm:flex-none"
             >
               <FunnelIcon className="h-4 w-4" />
-              Filters
+              <span className="hidden sm:inline">Filters</span>
             </button>
             <button
               onClick={() => {
                 // TODO: Implement CSV export
                 alert('Export functionality coming soon!');
               }}
-              className="btn-secondary flex items-center gap-2"
+              className="btn-secondary flex items-center gap-2 flex-1 sm:flex-none"
             >
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
-              Export
+              <span className="hidden sm:inline">Export</span>
             </button>
           </div>
         </div>
@@ -225,7 +209,7 @@ const TradeBrowser: React.FC = () => {
         {/* Search bar */}
         <form onSubmit={handleSearch} className="mt-4">
           <div className="relative">
-            <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-gray-500" />
+            <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-neutral-400" />
             <input
               type="text"
               placeholder="Search by member name, ticker, or asset description..."
@@ -237,46 +221,48 @@ const TradeBrowser: React.FC = () => {
         </form>
 
         {/* Quick Amount Filters */}
-        <div className="mt-4 flex flex-wrap gap-2 items-center">
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">Quick Filters:</span>
-          {[
-            { label: '$1K-$15K', value: '1001-15000', description: 'Standard congressional range: $1,001 - $15,000' },
-            { label: '$15K-$50K', value: '15001-50000', description: 'Standard congressional range: $15,001 - $50,000' },
-            { label: '$50K-$100K', value: '50001-100000', description: 'Standard congressional range: $50,001 - $100,000' },
-            { label: '$100K-$250K', value: '100001-250000', description: 'Standard congressional range: $100,001 - $250,000' },
-            { label: '$250K-$500K', value: '250001-500000', description: 'Standard congressional range: $250,001 - $500,000' },
-            { label: '$500K-$1M', value: '500001-1000000', description: 'Standard congressional range: $500,001 - $1,000,000' },
-            { label: '$1M+', value: '1000001-10000000', description: 'Standard congressional range: $1,000,001+' }
-          ].map((filter) => (
-            <button
-              key={filter.value}
-              onClick={() => handleFilterChange('amount_range', filter.value)}
-              className={`px-3 py-1 text-xs rounded-full border transition-colors ${
-                filters.amount_range === filter.value
-                  ? 'bg-primary-600 text-white border-primary-600'
-                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
-              }`}
-              title={filter.description}
-            >
-              {filter.label}
-            </button>
-          ))}
-          {filters.amount_range && (
-            <button
-              onClick={() => handleFilterChange('amount_range', undefined)}
-              className="px-2 py-1 text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-            >
-              ✕ Clear
-            </button>
-          )}
+        <div className="mt-4">
+          <span className="text-xs lg:text-sm font-medium text-neutral-700 dark:text-neutral-300 mr-2">Quick Filters:</span>
+          <div className="flex flex-wrap gap-1 lg:gap-2 items-center mt-2">
+            {[
+              { label: '$1K-$15K', value: '1001-15000', description: 'Standard congressional range: $1,001 - $15,000' },
+              { label: '$15K-$50K', value: '15001-50000', description: 'Standard congressional range: $15,001 - $50,000' },
+              { label: '$50K-$100K', value: '50001-100000', description: 'Standard congressional range: $50,001 - $100,000' },
+              { label: '$100K-$250K', value: '100001-250000', description: 'Standard congressional range: $100,001 - $250,000' },
+              { label: '$250K-$500K', value: '250001-500000', description: 'Standard congressional range: $250,001 - $500,000' },
+              { label: '$500K-$1M', value: '500001-1000000', description: 'Standard congressional range: $500,001 - $1,000,000' },
+              { label: '$1M+', value: '1000001-10000000', description: 'Standard congressional range: $1,000,001+' }
+            ].map((filter) => (
+              <button
+                key={filter.value}
+                onClick={() => handleFilterChange('amount_range', filter.value)}
+                className={`px-2 lg:px-3 py-1 text-xs rounded-full border transition-colors ${
+                  filters.amount_range === filter.value
+                    ? 'bg-primary-600 text-bg-primary border-primary-600'
+                    : 'bg-bg-light-secondary dark:bg-bg-secondary text-neutral-700 dark:text-neutral-300 border-neutral-400 dark:border-neutral-600 hover:bg-bg-light-tertiary dark:hover:bg-bg-tertiary'
+                }`}
+                title={filter.description}
+              >
+                {filter.label}
+              </button>
+            ))}
+            {filters.amount_range && (
+              <button
+                onClick={() => handleFilterChange('amount_range', undefined)}
+                className="px-2 py-1 text-xs text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200"
+              >
+                ✕ Clear
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Filters panel */}
         {showFilters && (
-          <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg transition-colors duration-200">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="mt-4 p-4 card transition-colors duration-200">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-xs lg:text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
                   Transaction Type
                 </label>
                 <select
@@ -292,7 +278,7 @@ const TradeBrowser: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs lg:text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
                   Party
                 </label>
                 <select
@@ -308,7 +294,7 @@ const TradeBrowser: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs lg:text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
                   Chamber
                 </label>
                 <select
@@ -325,7 +311,7 @@ const TradeBrowser: React.FC = () => {
 
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs lg:text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
                   Date From
                 </label>
                 <input
@@ -337,7 +323,7 @@ const TradeBrowser: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs lg:text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
                   Date To
                 </label>
                 <input
@@ -349,7 +335,7 @@ const TradeBrowser: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs lg:text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
                   Ticker
                 </label>
                 <input
@@ -362,7 +348,7 @@ const TradeBrowser: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs lg:text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
                   Amount Range
                 </label>
                 <select
@@ -398,11 +384,11 @@ const TradeBrowser: React.FC = () => {
 
       {/* Error message */}
       {error && (
-        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md p-4">
+        <div className="bg-error/10 border border-error/20 rounded-md p-4">
           <div className="flex">
-            <ExclamationTriangleIcon className="h-5 w-5 text-red-400" />
+            <ExclamationTriangleIcon className="h-5 w-5 text-error" />
             <div className="ml-3">
-              <p className="text-sm text-red-800 dark:text-red-200">{error}</p>
+              <p className="text-sm text-error">{error}</p>
             </div>
           </div>
         </div>
@@ -412,71 +398,72 @@ const TradeBrowser: React.FC = () => {
       {trades && (
         <div className="card overflow-hidden">
           {tradeItems.length === 0 ? (
-            <div className="p-8 text-center text-gray-500 dark:text-gray-400">
+            <div className="p-8 text-center text-neutral-400">
               <p className="text-lg font-semibold mb-2">No trades found</p>
               <p className="text-sm">Try adjusting your filters or check back later.</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                <thead className="bg-gray-50 dark:bg-gray-800">
+              {/* Desktop table */}
+              <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 hidden lg:table">
+                <thead className="bg-bg-light-secondary dark:bg-bg-secondary">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-neutral-400 uppercase tracking-wider">
                       Member
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-neutral-400 uppercase tracking-wider">
                       Asset
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-neutral-400 uppercase tracking-wider">
                       Type
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-neutral-400 uppercase tracking-wider">
                       Amount
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-neutral-400 uppercase tracking-wider">
                       Date
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-neutral-400 uppercase tracking-wider">
                       Owner
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                <tbody className="bg-bg-light-primary dark:bg-bg-primary divide-y divide-neutral-300 dark:divide-neutral-700">
                   {tradeItems.map((trade: CongressionalTrade) => {
                     const { icon: TypeIcon, color } = getTransactionTypeStyle(trade.transaction_type || '');
                     
                     return (
-                      <tr key={trade.id} className="hover:bg-gray-50 dark:hover:bg-gray-900">
+                      <tr key={trade.id} className="hover:bg-bg-light-secondary dark:hover:bg-bg-secondary">
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex flex-col">
-                            <span className="font-semibold text-gray-900 dark:text-white" aria-label="Member name">
+                            <span className="font-semibold text-neutral-900 dark:text-neutral-100" aria-label="Member name">
                               {trade.member_name || 'Unknown'}
                             </span>
                             <div className="flex gap-2 mt-1">
                               {getPartyBadge(trade.member_party)}
                               {getChamberBadge(trade.member_chamber)}
                               {(() => { const memberState = trade.member_state ? trade.member_state : ''; return memberState && (
-                                <span className="inline-block px-2 py-1 text-xs rounded bg-gray-700 text-white font-semibold" aria-label={memberState || ''}>{memberState}</span>
+                                <span className="inline-block px-2 py-1 text-xs rounded-full bg-neutral-600/20 border border-neutral-500/30 text-neutral-300 font-medium shadow-sm" aria-label={memberState || ''}>{memberState}</span>
                               ); })()}
                             </div>
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-900 dark:text-white font-semibold" aria-label="Ticker">
+                          <div className="text-sm text-neutral-900 dark:text-neutral-100 font-semibold" aria-label="Ticker">
                             {trade.ticker ? (
                               <span className="font-mono font-semibold">{trade.ticker}</span>
                             ) : (
-                              <span className="text-gray-400 dark:text-gray-500">No ticker</span>
+                              <span className="text-neutral-400">No ticker</span>
                             )}
                           </div>
-                          <div className="text-sm text-gray-700 dark:text-gray-300 max-w-xs truncate" aria-label="Asset name">
+                          <div className="text-sm text-neutral-600 dark:text-neutral-300 max-w-xs truncate" aria-label="Asset name">
                             {trade.asset_name}
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className={`flex items-center ${color}`}> {/* color is still used for icon */}
                             <TypeIcon className="h-4 w-4 mr-1" />
-                            <span className="capitalize text-sm font-semibold text-gray-900 dark:text-white" aria-label="Transaction type">
+                            <span className="capitalize text-sm font-semibold text-neutral-900 dark:text-neutral-100" aria-label="Transaction type">
                               {trade.transaction_type === 'P' ? 'Purchase' : 
                                trade.transaction_type === 'S' ? 'Sale' : 
                                trade.transaction_type === 'E' ? 'Exchange' : 
@@ -484,13 +471,13 @@ const TradeBrowser: React.FC = () => {
                             </span>
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white font-semibold" aria-label="Amount">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-900 dark:text-neutral-100 font-semibold" aria-label="Amount">
                           <div className="flex items-center">
                             {trade.amount_exact !== undefined && trade.amount_exact !== null ? (
                               <span className="flex items-center">
                                 {formatCentsToDollars(trade.amount_exact)}
                                 {trade.amount_exact >= 1000000 && (
-                                  <span className="ml-1 px-1.5 py-0.5 text-xs bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 rounded-full">
+                                  <span className="ml-1 px-1.5 py-0.5 text-xs bg-warning/20 border border-warning/30 text-warning rounded-full">
                                     Major
                                   </span>
                                 )}
@@ -499,7 +486,7 @@ const TradeBrowser: React.FC = () => {
                               <span className="flex items-center">
                                 {formatCentsToDollars(trade.amount_min)} - {formatCentsToDollars(trade.amount_max)}
                                 {trade.amount_max >= 1000000 && (
-                                  <span className="ml-1 px-1.5 py-0.5 text-xs bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 rounded-full">
+                                  <span className="ml-1 px-1.5 py-0.5 text-xs bg-warning/20 border border-warning/30 text-warning rounded-full">
                                     Major
                                   </span>
                                 )}
@@ -509,10 +496,10 @@ const TradeBrowser: React.FC = () => {
                             )}
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white" aria-label="Date">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-900 dark:text-neutral-100" aria-label="Date">
                           {formatDate(safeString(trade.transaction_date))}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white" aria-label="Owner">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-900 dark:text-neutral-100" aria-label="Owner">
                           {trade.owner === 'SP' ? 'Spouse' : 
                            trade.owner === 'JT' ? 'Joint' :
                            trade.owner === 'DC' ? 'Child' : 'Self'}
@@ -522,12 +509,112 @@ const TradeBrowser: React.FC = () => {
                   })}
                 </tbody>
               </table>
+
+              {/* Mobile card layout */}
+              <div className="lg:hidden space-y-4 p-4">
+                {tradeItems.map((trade: CongressionalTrade) => {
+                  const { icon: TypeIcon, color } = getTransactionTypeStyle(trade.transaction_type || '');
+                  
+                  return (
+                    <div key={trade.id} className="bg-bg-light-secondary dark:bg-bg-secondary rounded-lg p-4 border border-neutral-300 dark:border-neutral-700">
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-neutral-900 dark:text-neutral-100 text-sm" aria-label="Member name">
+                            {trade.member_name || 'Unknown'}
+                          </h3>
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {getPartyBadge(trade.member_party)}
+                            {getChamberBadge(trade.member_chamber)}
+                            {trade.member_state && (
+                              <span className="inline-block px-2 py-1 text-xs rounded-full bg-neutral-600/20 border border-neutral-500/30 text-neutral-300 font-medium shadow-sm">
+                                {trade.member_state}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className={`flex items-center ${color} ml-2`}>
+                          <TypeIcon className="h-4 w-4 mr-1" />
+                                                      <span className="capitalize text-xs font-semibold text-neutral-900 dark:text-neutral-100">
+                            {trade.transaction_type === 'P' ? 'Purchase' : 
+                             trade.transaction_type === 'S' ? 'Sale' : 
+                             trade.transaction_type === 'E' ? 'Exchange' : 
+                             trade.transaction_type || 'Unknown'}
+                          </span>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-2 text-sm">
+                        <div className="flex justify-between">
+                          <span className="text-neutral-600 dark:text-neutral-400">Asset:</span>
+                          <div className="text-right">
+                            <div className="text-neutral-900 dark:text-neutral-100 font-semibold">
+                              {trade.ticker ? (
+                                <span className="font-mono">{trade.ticker}</span>
+                              ) : (
+                                <span className="text-neutral-500 dark:text-neutral-400">No ticker</span>
+                              )}
+                            </div>
+                            {trade.asset_name && (
+                              <div className="text-neutral-600 dark:text-neutral-300 text-xs truncate max-w-32">
+                                {trade.asset_name}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        
+                        <div className="flex justify-between">
+                          <span className="text-neutral-600 dark:text-neutral-400">Amount:</span>
+                          <div className="text-right">
+                            <div className="text-neutral-900 dark:text-neutral-100 font-semibold">
+                              {trade.amount_exact !== undefined && trade.amount_exact !== null ? (
+                                <span className="flex items-center">
+                                  {formatCentsToDollars(trade.amount_exact)}
+                                  {trade.amount_exact >= 1000000 && (
+                                    <span className="ml-1 px-1.5 py-0.5 text-xs bg-warning/20 border border-warning/30 text-warning rounded-full">
+                                      Major
+                                    </span>
+                                  )}
+                                </span>
+                              ) : (trade.amount_min !== undefined && trade.amount_min !== null && trade.amount_max !== undefined && trade.amount_max !== null) ? (
+                                <span className="flex items-center">
+                                  {formatCentsToDollars(trade.amount_min)} - {formatCentsToDollars(trade.amount_max)}
+                                  {trade.amount_max >= 1000000 && (
+                                    <span className="ml-1 px-1.5 py-0.5 text-xs bg-warning/20 border border-warning/30 text-warning rounded-full">
+                                      Major
+                                    </span>
+                                  )}
+                                </span>
+                              ) : (
+                                'N/A'
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="flex justify-between">
+                          <span className="text-neutral-600 dark:text-neutral-400">Date:</span>
+                          <span className="text-neutral-900 dark:text-neutral-100">{formatDate(safeString(trade.transaction_date))}</span>
+                        </div>
+                        
+                        <div className="flex justify-between">
+                          <span className="text-neutral-600 dark:text-neutral-400">Owner:</span>
+                          <span className="text-neutral-900 dark:text-neutral-100">
+                            {trade.owner === 'SP' ? 'Spouse' : 
+                             trade.owner === 'JT' ? 'Joint' :
+                             trade.owner === 'DC' ? 'Child' : 'Self'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           )}
 
           {/* Pagination */}
           {trades.pages > 1 && (
-            <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+            <div className="bg-bg-light-secondary dark:bg-bg-secondary px-4 py-3 flex items-center justify-between border-t border-neutral-300 dark:border-neutral-700 sm:px-6">
               <div className="flex-1 flex justify-between sm:hidden">
                 <button
                   onClick={() => fetchTrades(currentPage - 1)}
@@ -546,7 +633,7 @@ const TradeBrowser: React.FC = () => {
               </div>
               <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
                 <div>
-                  <p className="text-sm text-gray-700">
+                  <p className="text-sm text-neutral-700 dark:text-neutral-300">
                     Showing{' '}
                     <span className="font-medium">
                       {(currentPage - 1) * 50 + 1}
@@ -564,17 +651,17 @@ const TradeBrowser: React.FC = () => {
                     <button
                       onClick={() => fetchTrades(currentPage - 1)}
                       disabled={!trades.has_prev}
-                      className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-neutral-400 dark:border-neutral-600 bg-bg-light-secondary dark:bg-bg-secondary text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:bg-bg-light-tertiary dark:hover:bg-bg-tertiary disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       Previous
                     </button>
-                    <span className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+                    <span className="relative inline-flex items-center px-4 py-2 border border-neutral-400 dark:border-neutral-600 bg-bg-light-secondary dark:bg-bg-secondary text-sm font-medium text-neutral-700 dark:text-neutral-300">
                       Page {currentPage} of {trades.pages}
                     </span>
                     <button
                       onClick={() => fetchTrades(currentPage + 1)}
                       disabled={!trades.has_next}
-                      className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-neutral-400 dark:border-neutral-600 bg-bg-light-secondary dark:bg-bg-secondary text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:bg-bg-light-tertiary dark:hover:bg-bg-tertiary disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       Next
                     </button>

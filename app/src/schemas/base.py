@@ -124,10 +124,10 @@ class Exchange(str):
 
 class SubscriptionTier(str):
     """User subscription tier enumeration."""
-    FREE = "free"
-    PRO = "pro"
-    PREMIUM = "premium"
-    ENTERPRISE = "enterprise"
+    FREE = "FREE"
+    PRO = "PRO"
+    PREMIUM = "PREMIUM"
+    ENTERPRISE = "ENTERPRISE"
 
 
 class SubscriptionStatus(str):

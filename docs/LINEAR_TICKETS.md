@@ -1,64 +1,68 @@
 # CapitolScope Linear Tickets
 
-## 🎯 **EPIC: Core Transaction Viewing System**
+## 🎯 **EPIC: Free Tier Foundation (Phase 1)**
 
 ### **CAP-10: Transaction List Page**
-**Priority:** High  
+**Priority:** Critical  
 **Estimate:** 3 days  
-**Labels:** `frontend`, `core-feature`
+**Labels:** `frontend`, `core-feature`, `free-tier`
 
 **Description:**
-Create a main transactions page that displays all congressional trading data in a sortable, filterable table.
+Create a main transactions page that displays all congressional trading data in a sortable, filterable table. This is the core feature for the Free tier.
 
 **Acceptance Criteria:**
 - [ ] Display transactions in a paginated table
 - [ ] Sort by congress member, date, amount, ticker
 - [ ] Filter by member, date range, transaction type
 - [ ] Search functionality across all fields
-- [ ] Export to CSV/Excel
+- [ ] Export to CSV (Free tier feature)
 - [ ] Responsive design for mobile/desktop
+- [ ] Limited to 3 months of historical data for Free tier
 
 **Technical Requirements:**
 - React/Next.js frontend
 - API endpoint for transaction data
 - Database queries with proper indexing
 - Real-time updates for new transactions
+- Data access controls for Free tier limitations
 
 ---
 
 ### **CAP-11: Individual Member Profile Page**
-**Priority:** High  
+**Priority:** Critical  
 **Estimate:** 4 days  
-**Labels:** `frontend`, `member-profile`
+**Labels:** `frontend`, `member-profile`, `free-tier`
 
 **Description:**
-Create detailed profile pages for each congress member showing their trading history and portfolio.
+Create detailed profile pages for each congress member showing their trading history and portfolio. This is a key Free tier feature to compete with Capitol Trades.
 
 **Acceptance Criteria:**
 - [ ] Member information (name, district, party)
-- [ ] Complete trading history timeline
+- [ ] Complete trading history timeline (limited to 3 months for Free tier)
 - [ ] Portfolio summary (current holdings)
 - [ ] Transaction statistics (total trades, amounts)
-- [ ] Performance metrics
+- [ ] Basic performance metrics (Free tier)
 - [ ] Related news/headlines
+- [ ] Export member data to CSV (Free tier feature)
 
 **Technical Requirements:**
 - Dynamic routing (`/member/[id]`)
-- Portfolio calculation logic
-- Performance analytics
+- Basic portfolio calculation logic
+- Performance analytics (basic for Free tier)
 - News API integration
+- Data access controls for Free tier limitations
 
 ---
 
 ## 📈 **EPIC: Stock Database & Price Tracking Infrastructure**
 
 ### **CAP-24: Comprehensive Stock Database Setup**
-**Priority:** High  
+**Priority:** Critical  
 **Estimate:** 5 days  
-**Labels:** `backend`, `database`, `stocks`, `foundation`
+**Labels:** `backend`, `database`, `stocks`, `foundation`, `free-tier`
 
 **Description:**
-Build a comprehensive stock database covering all assets traded by congress members, with daily price tracking to enable TradingView-style charts and performance analytics.
+Build a comprehensive stock database covering all assets traded by congress members, with daily price tracking to enable basic portfolio analytics for Free tier and advanced features for paid tiers.
 
 **Acceptance Criteria:**
 - [ ] Stock database with all S&P 500 companies
@@ -82,12 +86,12 @@ Build a comprehensive stock database covering all assets traded by congress memb
 ---
 
 ### **CAP-25: Daily Price Data Ingestion System**
-**Priority:** High  
+**Priority:** Critical  
 **Estimate:** 6 days  
-**Labels:** `backend`, `data-ingestion`, `automation`
+**Labels:** `backend`, `data-ingestion`, `automation`, `free-tier`
 
 **Description:**
-Create an automated system to fetch and store daily price data for all tracked securities, enabling historical performance analysis and real-time portfolio valuation.
+Create an automated system to fetch and store daily price data for all tracked securities, enabling basic portfolio analytics for Free tier and advanced features for paid tiers.
 
 **Acceptance Criteria:**
 - [ ] Daily OHLC (Open, High, Low, Close) price data
@@ -112,43 +116,71 @@ Create an automated system to fetch and store daily price data for all tracked s
 ---
 
 ### **CAP-26: Portfolio Performance Engine**
-**Priority:** Medium  
+**Priority:** Critical  
 **Estimate:** 4 days  
-**Labels:** `backend`, `analytics`, `performance`
+**Labels:** `backend`, `analytics`, `performance`, `free-tier`
 
 **Description:**
-Build the core engine that calculates portfolio performance, gains/losses, and benchmarking for congressional trades using the stock price database.
+Build the core engine that calculates portfolio performance, gains/losses, and benchmarking for congressional trades using the stock price database. This enables basic portfolio analytics for Free tier.
 
 **Acceptance Criteria:**
 - [ ] Real-time portfolio valuation
-- [ ] Historical performance calculation
+- [ ] Historical performance calculation (limited to 3 months for Free tier)
 - [ ] Unrealized/realized gains tracking
-- [ ] Benchmark comparison (S&P 500, sector indices)
-- [ ] Risk-adjusted returns (Sharpe ratio, etc.)
+- [ ] Basic benchmark comparison (S&P 500)
+- [ ] Basic risk metrics for Free tier
 - [ ] Dividend income tracking
 - [ ] Cost basis calculation with FIFO/LIFO
-- [ ] Portfolio diversification metrics
-- [ ] Performance attribution analysis
+- [ ] Basic portfolio diversification metrics
+- [ ] Performance attribution analysis (Premium tier)
 
 **Technical Requirements:**
 - Efficient portfolio calculation algorithms
 - Real-time price integration
-- Historical performance computation
-- Benchmark data integration
-- Risk metrics calculation
-- Tax-loss harvesting analysis
+- Historical performance computation (with tier limitations)
+- Basic benchmark data integration
+- Basic risk metrics calculation
+- Data access controls for Free tier limitations
 
 ---
 
 ## 📊 **EPIC: Portfolio Visualization**
 
-### **CAP-27: TradingView-Style Stock Charts**
+### **CAP-27: Congress-GOV API integration**
 **Priority:** Medium  
-**Estimate:** 5 days  
-**Labels:** `frontend`, `charts`, `visualization`
+**Estimate:** 4 days  
+**Labels:** `api`, `backend`, `integration`
 
 **Description:**
-Create interactive stock charts similar to TradingView that show congressional trades overlaid on price movements, providing immediate context for trading decisions.
+Integrate with Congress.gov API to fetch official congressional data and enhance our database.
+
+**Acceptance Criteria:**
+- [ ] Congress.gov API integration
+- [ ] Member information synchronization
+- [ ] Committee data integration
+- [ ] Bill and legislation tracking
+- [ ] Real-time data updates
+- [ ] Error handling and fallbacks
+- [ ] Rate limiting compliance
+- [ ] Data validation and cleaning
+
+**Technical Requirements:**
+- Congress.gov API client
+- Data synchronization system
+- Error handling and retry logic
+- Rate limiting implementation
+- Data validation and cleaning
+- Real-time update system
+
+---
+
+### **CAP-30: TradingView-Style Stock Charts**
+**Priority:** Medium  
+**Estimate:** 5 days  
+**Labels:** `frontend`, `charts`, `visualization`, `premium-tier`
+
+**Description:**
+Create interactive stock charts similar to TradingView that show congressional trades overlaid on price movements, providing immediate context for trading decisions. This is a Premium tier feature.
 
 **Acceptance Criteria:**
 - [ ] Interactive candlestick/line charts
@@ -161,6 +193,7 @@ Create interactive stock charts similar to TradingView that show congressional t
 - [ ] Portfolio performance overlay
 - [ ] Comparison with market indices
 - [ ] Mobile-responsive chart interaction
+- [ ] Premium tier access controls
 
 **Technical Requirements:**
 - TradingView widget integration or Chart.js
@@ -169,30 +202,33 @@ Create interactive stock charts similar to TradingView that show congressional t
 - Trade event overlay system
 - Performance calculation display
 - Interactive tooltip system
+- Premium tier feature gating
 
 ---
 
 ### **CAP-12: Member Portfolio Dashboard**
 **Priority:** Medium  
 **Estimate:** 5 days  
-**Labels:** `frontend`, `charts`, `portfolio`
+**Labels:** `frontend`, `charts`, `portfolio`, `free-tier`
 
 **Description:**
-Create a portfolio dashboard that shows a congress member's holdings like a personal investment account.
+Create a portfolio dashboard that shows a congress member's holdings like a personal investment account. This is a Free tier feature with basic analytics.
 
 **Acceptance Criteria:**
-- [ ] Interactive stock charts (like TradingView)
+- [ ] Basic portfolio visualization (Free tier)
 - [ ] Portfolio allocation pie chart
-- [ ] Performance over time graph
+- [ ] Performance over time graph (limited to 3 months for Free tier)
 - [ ] Holdings list with current values
 - [ ] Transaction history timeline
-- [ ] Risk metrics and analysis
+- [ ] Basic risk metrics and analysis (Free tier)
+- [ ] Advanced portfolio analytics (Premium tier)
 
 **Technical Requirements:**
 - Chart.js or TradingView integration
 - Real-time stock price data
 - Portfolio calculation engine
 - Performance tracking algorithms
+- Tier-based feature access controls
 
 ---
 
@@ -218,10 +254,10 @@ Allow users to compare portfolios between different congress members.
 ### **CAP-14: Email Newsletter Infrastructure**
 **Priority:** Medium  
 **Estimate:** 4 days  
-**Labels:** `backend`, `email`, `notifications`
+**Labels:** `backend`, `email`, `notifications`, `pro-tier`
 
 **Description:**
-Build the email notification system for alerting users about significant congressional trades.
+Build the email notification system for alerting users about significant congressional trades. This enables Weekly Summaries for Pro tier.
 
 **Acceptance Criteria:**
 - [ ] Email service integration (SendGrid/Mailgun)
@@ -230,35 +266,41 @@ Build the email notification system for alerting users about significant congres
 - [ ] Email preferences (frequency, filters)
 - [ ] Unsubscribe functionality
 - [ ] Email analytics tracking
+- [ ] Weekly summary generation for Pro tier
 
 **Technical Requirements:**
 - Email service API integration
 - Template engine
 - Subscriber database
 - Email queue system
+- Weekly summary generation logic
 
 ---
 
 ### **CAP-15: Trade Alert System**
-**Priority:** Medium  
+**Priority:** Critical  
 **Estimate:** 3 days  
-**Labels:** `backend`, `alerts`
+**Labels:** `backend`, `alerts`, `free-tier`
 
 **Description:**
-Create automated alerts for significant trades (large amounts, specific stocks, etc.).
+Create automated alerts for significant trades (large amounts, specific stocks, etc.). This is a key Free tier feature to compete with Capitol Trades.
 
 **Acceptance Criteria:**
-- [ ] Configurable alert thresholds
+- [ ] Basic alert thresholds (Free tier)
 - [ ] Real-time trade monitoring
 - [ ] Email notification triggers
 - [ ] Alert history tracking
 - [ ] User alert preferences
+- [ ] Multiple buyer alerts (Pro tier)
+- [ ] High-value trade alerts (Pro tier)
+- [ ] Custom alert configurations (Premium tier)
 
 **Technical Requirements:**
 - Real-time data processing
 - Alert rule engine
 - Notification queuing
 - User preference management
+- Tier-based alert feature access
 
 ---
 
@@ -304,15 +346,15 @@ Integrate discussion threads with individual trades and member profiles.
 
 ---
 
-## 💎 **EPIC: Premium Features**
+## 💎 **EPIC: Subscription & Premium Features**
 
 ### **CAP-18: Pro Features Infrastructure**
-**Priority:** Medium  
+**Priority:** High  
 **Estimate:** 5 days  
-**Labels:** `backend`, `premium`, `billing`
+**Labels:** `backend`, `premium`, `billing`, `pro-tier`
 
 **Description:**
-Build the foundation for premium features and subscription management.
+Build the foundation for premium features and subscription management. This enables Pro tier features.
 
 **Acceptance Criteria:**
 - [ ] User subscription management
@@ -320,86 +362,99 @@ Build the foundation for premium features and subscription management.
 - [ ] Feature access control
 - [ ] Subscription analytics
 - [ ] Billing history
+- [ ] Pro tier feature gating
+- [ ] Full historical data access for Pro tier
+- [ ] Saved portfolios/watchlists for Pro tier
 
 **Technical Requirements:**
 - Stripe integration
 - Subscription management
 - Feature gating system
 - Analytics tracking
+- Data access controls for tier limitations
 
 ---
 
 ### **CAP-19: Advanced Analytics Dashboard**
-**Priority:** Low  
+**Priority:** Medium  
 **Estimate:** 7 days  
-**Labels:** `frontend`, `premium`, `analytics`
+**Labels:** `frontend`, `premium`, `analytics`, `premium-tier`
 
 **Description:**
-Create advanced analytics features for premium users.
+Create advanced analytics features for Premium and Enterprise tier users.
 
 **Acceptance Criteria:**
-- [ ] Advanced portfolio analytics
-- [ ] Trading pattern analysis
-- [ ] Insider trading correlation tools
-- [ ] Custom alert configurations
-- [ ] Data export capabilities
-- [ ] API access for premium users
+- [ ] Advanced portfolio analytics (Premium tier)
+- [ ] Trading pattern analysis (Premium tier)
+- [ ] Insider trading correlation tools (Premium tier)
+- [ ] Custom alert configurations (Premium tier)
+- [ ] Data export capabilities (Premium tier)
+- [ ] API access for premium users (Premium tier)
+- [ ] Advanced analytics dashboard (Enterprise tier)
+- [ ] White-label analytics options (Enterprise tier)
 
 **Technical Requirements:**
 - Advanced analytics engine
 - Pattern recognition algorithms
 - Custom reporting system
 - API rate limiting
+- Tier-based feature access controls
 
 ---
 
 ## 🔧 **EPIC: Technical Infrastructure**
 
 ### **CAP-20: API Development**
-**Priority:** High  
+**Priority:** Critical  
 **Estimate:** 4 days  
-**Labels:** `backend`, `api`
+**Labels:** `backend`, `api`, `free-tier`
 
 **Description:**
-Build RESTful API endpoints for all frontend features.
+Build RESTful API endpoints for all frontend features. This enables Free tier functionality and Premium tier API access.
 
 **Acceptance Criteria:**
-- [ ] Transaction data endpoints
-- [ ] Member profile endpoints
-- [ ] Portfolio calculation endpoints
-- [ ] Search and filtering endpoints
+- [ ] Transaction data endpoints (Free tier)
+- [ ] Member profile endpoints (Free tier)
+- [ ] Portfolio calculation endpoints (Free tier)
+- [ ] Search and filtering endpoints (Free tier)
 - [ ] API documentation
 - [ ] Rate limiting and authentication
+- [ ] API access for Premium tier (rate-limited)
+- [ ] Increased API limits for Enterprise tier
 
 **Technical Requirements:**
 - FastAPI or Django REST Framework
 - JWT authentication
 - API documentation (Swagger)
-- Rate limiting
+- Rate limiting with tier-based limits
+- API access controls for Premium/Enterprise tiers
 
 ---
 
 ### **CAP-21: Database Schema Design**
-**Priority:** High  
+**Priority:** Critical  
 **Estimate:** 3 days  
-**Labels:** `backend`, `database`
+**Labels:** `backend`, `database`, `free-tier`
 
 **Description:**
-Design and implement the complete database schema for all features.
+Design and implement the complete database schema for all features. This is foundational for Free tier and all subsequent tiers.
 
 **Acceptance Criteria:**
 - [ ] User management tables
 - [ ] Transaction data tables
 - [ ] Portfolio tracking tables
-- [ ] Discussion board tables
-- [ ] Subscription/billing tables
+- [ ] Subscription/billing tables (for Pro+ tiers)
+- [ ] Alert and notification tables
+- [ ] API usage tracking tables (for Premium+ tiers)
 - [ ] Proper indexing for performance
+- [ ] Data access controls for tier limitations
 
 **Technical Requirements:**
 - PostgreSQL database
 - Migration system
 - Performance optimization
 - Backup strategy
+- Tier-based data access controls
 
 ---
 
@@ -445,30 +500,228 @@ Optimize application performance for large datasets and high traffic.
 - [ ] Load testing
 - [ ] Performance monitoring
 
+### **CAP-28: Transaction Accuracy Improvement**
+**Priority:** High  
+**Estimate:** 3 days  
+**Labels:** `backend`, `improvement`, `core-feature`
+
+**Description:**
+Improve the accuracy and reliability of transaction data processing and display.
+
+**Acceptance Criteria:**
+- [ ] Enhanced transaction data validation
+- [ ] Improved error handling for malformed data
+- [ ] Better duplicate detection and resolution
+- [ ] Data consistency checks
+- [ ] Transaction reconciliation tools
+- [ ] Audit trail for data changes
+
+**Technical Requirements:**
+- Data validation algorithms
+- Error handling and logging
+- Duplicate detection logic
+- Data reconciliation system
+
 ---
 
-## 📋 **MILESTONE: Foundation (Stock DB + Basic Features)**
-**Target Date:** 6 weeks  
+### **CAP-29: User Authentication & Profile System**
+**Priority:** High  
+**Estimate:** 4 days  
+**Labels:** `auth`, `backend`, `frontend`
+
+**Description:**
+Implement comprehensive user authentication and profile management system.
+
+**Acceptance Criteria:**
+- [ ] User registration and login
+- [ ] Password reset functionality
+- [ ] Email verification
+- [ ] User profile management
+- [ ] Two-factor authentication
+- [ ] Session management
+- [ ] User preferences and settings
+- [ ] Account deletion
+
+**Technical Requirements:**
+- JWT authentication system
+- Password hashing and security
+- Email service integration
+- User database schema
+- Session management
+- Security best practices
+
+---
+
+
+
+
+
+
+
+### **CAP-31: Export to CSV Feature**
+**Priority:** Critical  
+**Estimate:** 2 days  
+**Labels:** `frontend`, `export`, `free-tier`
+
+**Description:**
+Implement CSV export functionality for transaction data. This is a key Free tier feature to compete with Capitol Trades.
+
+**Acceptance Criteria:**
+- [ ] Export transaction data to CSV
+- [ ] Export member portfolio data to CSV
+- [ ] Configurable export options (date range, filters)
+- [ ] Large dataset handling
+- [ ] Download progress indicators
+- [ ] Free tier access controls
+
+**Technical Requirements:**
+- CSV generation library
+- File download handling
+- Data filtering and processing
+- Progress tracking for large exports
+
+---
+
+### **CAP-32: Saved Portfolios / Watchlists**
+**Priority:** High  
+**Estimate:** 3 days  
+**Labels:** `frontend`, `backend`, `pro-tier`
+
+**Description:**
+Implement saved portfolios and watchlists functionality for Pro tier users.
+
+**Acceptance Criteria:**
+- [ ] Save member portfolios to watchlist
+- [ ] Create custom watchlists
+- [ ] Watchlist management (add/remove)
+- [ ] Watchlist notifications
+- [ ] Share watchlists (optional)
+- [ ] Pro tier access controls
+
+**Technical Requirements:**
+- User watchlist database schema
+- Watchlist CRUD operations
+- Notification integration
+- Pro tier feature gating
+
+---
+
+### **CAP-33: Sector/Committee-based Filters**
+**Priority:** Medium  
+**Estimate:** 3 days  
+**Labels:** `frontend`, `backend`, `premium-tier`
+
+**Description:**
+Implement advanced filtering by congressional committees and sectors for Premium tier users.
+
+**Acceptance Criteria:**
+- [ ] Filter by congressional committees
+- [ ] Filter by industry sectors
+- [ ] Combined committee/sector filters
+- [ ] Filter presets and saved filters
+- [ ] Premium tier access controls
+
+**Technical Requirements:**
+- Committee and sector data mapping
+- Advanced filter engine
+- Filter persistence
+- Premium tier feature gating
+
+---
+
+### **CAP-34: White-Label Dashboard Options**
+**Priority:** Low  
+**Estimate:** 5 days  
+**Labels:** `frontend`, `backend`, `enterprise-tier`
+
+**Description:**
+Implement white-label dashboard options for Enterprise tier customers.
+
+**Acceptance Criteria:**
+- [ ] Custom branding options
+- [ ] Custom domain support
+- [ ] Branded email templates
+- [ ] Custom color schemes
+- [ ] Enterprise tier access controls
+
+**Technical Requirements:**
+- Dynamic theming system
+- Custom domain handling
+- Branded template engine
+- Enterprise tier feature gating
+
+---
+
+### **CAP-35: Team Management System**
+**Priority:** Low  
+**Estimate:** 4 days  
+**Labels:** `frontend`, `backend`, `enterprise-tier`
+
+**Description:**
+Implement team management and admin panel for Enterprise tier customers.
+
+**Acceptance Criteria:**
+- [ ] Team member invitation system
+- [ ] Role-based access controls
+- [ ] Team admin panel
+- [ ] Usage analytics per team member
+- [ ] Enterprise tier access controls
+
+**Technical Requirements:**
+- Team management database schema
+- Role-based permissions
+- Admin dashboard
+- Enterprise tier feature gating
+
+
+
+---
+
+## 📋 **MILESTONE: Free Tier Foundation (Phase 1)**
+**Target Date:** 4 weeks  
 **Total Estimate:** 25 days
-**Critical Path:** CAP-24 → CAP-25 → CAP-10 → CAP-11
+**Critical Path:** CAP-24 → CAP-25 → CAP-10 → CAP-11 → CAP-15
 
 **Tickets:**
 - CAP-24: Comprehensive Stock Database Setup (5 days)
 - CAP-25: Daily Price Data Ingestion System (6 days)
 - CAP-10: Transaction List Page (3 days)
 - CAP-11: Individual Member Profile Page (4 days)
+- CAP-15: Trade Alert System (3 days)
+- CAP-26: Portfolio Performance Engine (4 days)
 - CAP-20: API Development (4 days)
 - CAP-21: Database Schema Design (3 days)
+- CAP-29: User Authentication & Profile System (4 days)
+- CAP-31: Export to CSV Feature (2 days)
 
-## 📋 **MILESTONE: Core Features (Charts + Performance)**
+## 📋 **MILESTONE: Pro Tier Features (Phase 2)**
+**Target Date:** 7 weeks  
+**Total Estimate:** 15 days
+
+**Tickets:**
+- CAP-18: Pro Features Infrastructure (5 days)
+- CAP-14: Email Newsletter Infrastructure (4 days)
+- CAP-32: Saved Portfolios / Watchlists (3 days)
+- Enhanced Alert System (CAP-15 extension) (3 days)
+
+## 📋 **MILESTONE: Premium Tier Features (Phase 3)**
 **Target Date:** 10 weeks  
 **Total Estimate:** 18 days
 
 **Tickets:**
-- CAP-26: Portfolio Performance Engine (4 days)
-- CAP-27: TradingView-Style Stock Charts (5 days)
-- CAP-12: Member Portfolio Dashboard (5 days)
-- CAP-14: Email Newsletter Infrastructure (4 days)
+- CAP-30: TradingView-Style Stock Charts (5 days)
+- CAP-19: Advanced Analytics Dashboard (7 days)
+- CAP-33: Sector/Committee-based Filters (3 days)
+- API Rate Limiting (CAP-20 extension) (3 days)
+
+## 📋 **MILESTONE: Enterprise Tier Features (Phase 4)**
+**Target Date:** 12 weeks  
+**Total Estimate:** 12 days
+
+**Tickets:**
+- CAP-34: White-Label Dashboard Options (5 days)
+- CAP-35: Team Management System (4 days)
+- Advanced Analytics Dashboard (CAP-19 extension) (3 days)
 
 ## 📋 **MILESTONE: Production Launch**
 **Target Date:** 12 weeks  
@@ -485,30 +738,37 @@ Optimize application performance for large datasets and high traffic.
 
 ---
 
-## 🎯 **Priority Matrix:**
+## 🎯 **Priority Matrix by Tier:**
 
-**Critical Foundation (Must Have First):**
+### **Free Tier (Critical - Launch ASAP):**
 - CAP-24: Comprehensive Stock Database Setup
 - CAP-25: Daily Price Data Ingestion System
-- CAP-20: API Development
-- CAP-21: Database Schema Design
-
-**High Priority (Launch Critical):**
 - CAP-10: Transaction List Page
 - CAP-11: Individual Member Profile Page
-- CAP-22: Production Deployment
-
-**Medium Priority (Core Features):**
-- CAP-26: Portfolio Performance Engine
-- CAP-27: TradingView-Style Stock Charts
-- CAP-12: Member Portfolio Dashboard
-- CAP-14: Email Newsletter Infrastructure
 - CAP-15: Trade Alert System
-- CAP-18: Pro Features Infrastructure
-- CAP-23: Performance Optimization
+- CAP-26: Portfolio Performance Engine
+- CAP-20: API Development
+- CAP-21: Database Schema Design
+- CAP-29: User Authentication & Profile System
+- CAP-31: Export to CSV Feature
 
-**Low Priority (Enhancement):**
-- CAP-13: Portfolio Comparison Tool
-- CAP-16: Message Board System
-- CAP-17: Trade Discussion Threads
-- CAP-19: Advanced Analytics Dashboard 
+### **Pro Tier (High Priority - 2-3 weeks post-launch):**
+- CAP-18: Pro Features Infrastructure
+- CAP-14: Email Newsletter Infrastructure
+- CAP-32: Saved Portfolios / Watchlists
+- Enhanced Alert System (CAP-15 extension)
+
+### **Premium Tier (Medium Priority - 4-6 weeks post-launch):**
+- CAP-30: TradingView-Style Stock Charts
+- CAP-19: Advanced Analytics Dashboard
+- CAP-33: Sector/Committee-based Filters
+- API Rate Limiting (CAP-20 extension)
+
+### **Enterprise Tier (Low Priority - 8-10 weeks post-launch):**
+- CAP-34: White-Label Dashboard Options
+- CAP-35: Team Management System
+- Advanced Analytics Dashboard (CAP-19 extension)
+
+### **Infrastructure (Ongoing):**
+- CAP-22: Production Deployment
+- CAP-23: Performance Optimization 

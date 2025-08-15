@@ -12,7 +12,7 @@ import {
 } from '@heroicons/react/24/outline';
 
 const ProfileSettings: React.FC = () => {
-  const { user, updateUser } = useAuth();
+  const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   
@@ -217,30 +217,30 @@ const ProfileSettings: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 lg:space-y-6">
       {/* Header */}
-      <div className="card p-6">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+      <div className="card p-4 lg:p-6">
+        <h2 className="text-xl lg:text-2xl font-bold text-neutral-100 mb-2">
           Profile Settings
         </h2>
-        <p className="text-gray-600 dark:text-gray-400">
+        <p className="text-sm lg:text-base text-neutral-400">
           Manage your account settings and preferences.
         </p>
         {isFree && (
-          <div className="mt-4 p-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-lg shadow-lg">
-            <div className="flex items-center justify-between">
+          <div className="mt-4 p-3 lg:p-4 bg-neon-gradient rounded-lg shadow-glow-primary">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div className="flex items-center">
-                <SparklesIcon className="h-6 w-6 text-white mr-3" />
+                <SparklesIcon className="h-5 w-5 lg:h-6 lg:w-6 text-bg-primary mr-2 lg:mr-3" />
                 <div>
-                  <h4 className="text-lg font-bold text-white mb-1">Unlock Premium Features</h4>
-                  <p className="text-yellow-100 text-sm">
+                  <h4 className="text-base lg:text-lg font-bold text-bg-primary mb-1">Unlock Premium Features</h4>
+                  <p className="text-bg-primary/80 text-xs lg:text-sm">
                     Get access to Trade Alerts, Weekly Summaries, Multiple Buyer Alerts, and High-Value Trade Alerts
                   </p>
                 </div>
               </div>
               <Link
                 to="/premium"
-                className="bg-white text-orange-600 px-4 py-2 rounded-lg font-semibold hover:bg-gray-50 transition-colors duration-200 shadow-md hover:shadow-lg transform hover:scale-105"
+                className="bg-bg-primary text-primary-400 px-3 lg:px-4 py-2 rounded-lg font-semibold hover:bg-bg-tertiary transition-colors duration-200 shadow-md hover:shadow-lg transform hover:scale-105 text-sm lg:text-base"
               >
                 View Plans
               </Link>
@@ -266,19 +266,19 @@ const ProfileSettings: React.FC = () => {
         </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
         {/* Profile Information */}
-        <div className="card p-6">
-          <div className="flex items-center mb-6">
-            <UserCircleIcon className="h-6 w-6 text-primary-600 mr-3" />
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+        <div className="card p-4 lg:p-6">
+          <div className="flex items-center mb-4 lg:mb-6">
+            <UserCircleIcon className="h-5 w-5 lg:h-6 lg:w-6 text-primary-400 mr-2 lg:mr-3" />
+            <h3 className="text-base lg:text-lg font-semibold text-neutral-100">
               Profile Information
             </h3>
           </div>
 
           <form onSubmit={handleProfileSubmit} className="space-y-4">
             <div>
-              <label htmlFor="display_name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label htmlFor="display_name" className="block text-xs lg:text-sm font-medium text-neutral-300 mb-1">
                 Display Name
               </label>
               <input
@@ -293,11 +293,11 @@ const ProfileSettings: React.FC = () => {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label htmlFor="email" className="block text-xs lg:text-sm font-medium text-neutral-300 mb-1">
                 Email Address
               </label>
               <div className="flex items-center">
-                <EnvelopeIcon className="h-5 w-5 text-gray-400 mr-2" />
+                <EnvelopeIcon className="h-4 w-4 lg:h-5 lg:w-5 text-neutral-400 mr-2" />
                 <input
                   type="email"
                   id="email"
@@ -319,7 +319,7 @@ const ProfileSettings: React.FC = () => {
                 onChange={(e) => setProfileData(prev => ({ ...prev, is_public_profile: e.target.checked }))}
                 className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
               />
-              <label htmlFor="is_public_profile" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+              <label htmlFor="is_public_profile" className="ml-2 block text-xs lg:text-sm text-gray-700 dark:text-gray-300">
                 Make my profile public
               </label>
             </div>
@@ -335,17 +335,17 @@ const ProfileSettings: React.FC = () => {
         </div>
 
         {/* Change Password */}
-        <div className="card p-6">
-          <div className="flex items-center mb-6">
-            <KeyIcon className="h-6 w-6 text-primary-600 mr-3" />
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+        <div className="card p-4 lg:p-6">
+          <div className="flex items-center mb-4 lg:mb-6">
+            <KeyIcon className="h-5 w-5 lg:h-6 lg:w-6 text-primary-600 mr-2 lg:mr-3" />
+            <h3 className="text-base lg:text-lg font-semibold text-gray-900 dark:text-gray-100">
               Change Password
             </h3>
           </div>
 
           <form onSubmit={handlePasswordSubmit} className="space-y-4">
             <div>
-              <label htmlFor="current_password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label htmlFor="current_password" className="block text-xs lg:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Current Password
               </label>
               <input
@@ -360,7 +360,7 @@ const ProfileSettings: React.FC = () => {
             </div>
 
             <div>
-              <label htmlFor="new_password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label htmlFor="new_password" className="block text-xs lg:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 New Password
               </label>
               <input
@@ -375,7 +375,7 @@ const ProfileSettings: React.FC = () => {
             </div>
 
             <div>
-              <label htmlFor="confirm_password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label htmlFor="confirm_password" className="block text-xs lg:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Confirm New Password
               </label>
               <input
@@ -401,10 +401,10 @@ const ProfileSettings: React.FC = () => {
       </div>
 
       {/* Notification Settings */}
-      <div className="card p-6">
-        <div className="flex items-center mb-6">
-          <BellIcon className="h-6 w-6 text-primary-600 mr-3" />
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+      <div className="card p-4 lg:p-6">
+        <div className="flex items-center mb-4 lg:mb-6">
+          <BellIcon className="h-5 w-5 lg:h-6 lg:w-6 text-primary-600 mr-2 lg:mr-3" />
+          <h3 className="text-base lg:text-lg font-semibold text-gray-900 dark:text-gray-100">
             Notification Settings
           </h3>
         </div>
@@ -412,8 +412,8 @@ const ProfileSettings: React.FC = () => {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100">Email Notifications</h4>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Receive notifications via email</p>
+              <h4 className="text-xs lg:text-sm font-medium text-gray-900 dark:text-gray-100">Email Notifications</h4>
+              <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400">Receive notifications via email</p>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
               <input
@@ -430,8 +430,8 @@ const ProfileSettings: React.FC = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <div>
-                  <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100">Trade Alerts</h4>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Get notified of new congressional trades</p>
+                  <h4 className="text-xs lg:text-sm font-medium text-gray-900 dark:text-gray-100">Trade Alerts</h4>
+                  <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400">Get notified of new congressional trades</p>
                 </div>
                 {!isPremium && <PremiumBadge />}
               </div>
@@ -452,8 +452,8 @@ const ProfileSettings: React.FC = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <div>
-                  <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100">Weekly Summary</h4>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Receive weekly trading activity summaries</p>
+                  <h4 className="text-xs lg:text-sm font-medium text-gray-900 dark:text-gray-100">Weekly Summary</h4>
+                  <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400">Receive weekly trading activity summaries</p>
                 </div>
                 {!isPremium && <PremiumBadge />}
               </div>
@@ -474,8 +474,8 @@ const ProfileSettings: React.FC = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <div>
-                  <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100">Multiple Buyer Alerts</h4>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Alerts when 5+ members buy same stock in 3 months</p>
+                  <h4 className="text-xs lg:text-sm font-medium text-gray-900 dark:text-gray-100">Multiple Buyer Alerts</h4>
+                  <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400">Alerts when 5+ members buy same stock in 3 months</p>
                 </div>
                 {!isPremium && <PremiumBadge />}
               </div>
@@ -496,8 +496,8 @@ const ProfileSettings: React.FC = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <div>
-                  <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100">High-Value Trade Alerts</h4>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Alerts for trades over $1M</p>
+                  <h4 className="text-xs lg:text-sm font-medium text-gray-900 dark:text-gray-100">High-Value Trade Alerts</h4>
+                  <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400">Alerts for trades over $1M</p>
                 </div>
                 {!isPremium && <PremiumBadge />}
               </div>
@@ -517,19 +517,19 @@ const ProfileSettings: React.FC = () => {
       </div>
 
       {/* Account Security */}
-      <div className="card p-6">
-        <div className="flex items-center mb-6">
-          <ShieldCheckIcon className="h-6 w-6 text-primary-600 mr-3" />
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+      <div className="card p-4 lg:p-6">
+        <div className="flex items-center mb-4 lg:mb-6">
+          <ShieldCheckIcon className="h-5 w-5 lg:h-6 lg:w-6 text-primary-600 mr-2 lg:mr-3" />
+          <h3 className="text-base lg:text-lg font-semibold text-gray-900 dark:text-gray-100">
             Account Security
           </h3>
         </div>
 
         <div className="space-y-4">
-          <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+          <div className="flex items-center justify-between p-3 lg:p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
             <div>
-              <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100">Two-Factor Authentication</h4>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Add an extra layer of security to your account</p>
+              <h4 className="text-xs lg:text-sm font-medium text-gray-900 dark:text-gray-100">Two-Factor Authentication</h4>
+              <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400">Add an extra layer of security to your account</p>
             </div>
             <button 
               className="btn-secondary btn-sm"
@@ -542,10 +542,10 @@ const ProfileSettings: React.FC = () => {
             </button>
           </div>
 
-          <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+          <div className="flex items-center justify-between p-3 lg:p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
             <div>
-              <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100">Active Sessions</h4>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Manage your active login sessions</p>
+              <h4 className="text-xs lg:text-sm font-medium text-gray-900 dark:text-gray-100">Active Sessions</h4>
+              <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400">Manage your active login sessions</p>
             </div>
             <button 
               className="btn-secondary btn-sm"
@@ -558,10 +558,10 @@ const ProfileSettings: React.FC = () => {
             </button>
           </div>
 
-          <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+          <div className="flex items-center justify-between p-3 lg:p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
             <div>
-              <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100">Delete Account</h4>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Permanently delete your account and all data</p>
+              <h4 className="text-xs lg:text-sm font-medium text-gray-900 dark:text-gray-100">Delete Account</h4>
+              <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400">Permanently delete your account and all data</p>
             </div>
             <button 
               className="btn-secondary btn-sm text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"

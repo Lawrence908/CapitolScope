@@ -21,7 +21,7 @@ from core.auth import (
     verify_password, AuthenticationError
 )
 from core.email import email_service
-from domains.users.models import User, UserStatus, AuthProvider, PasswordResetToken
+from domains.users.models import User, UserStatus, AuthProvider, PasswordResetToken, SubscriptionTier
 from domains.users.schemas import (
     LoginRequest, RegisterRequest, TokenResponse, RefreshTokenRequest,
     UserResponse, ChangePasswordRequest, ResetPasswordRequest, ResetPasswordConfirmRequest,
@@ -110,7 +110,7 @@ async def register(
             auth_provider=AuthProvider.EMAIL,
             status=UserStatus.ACTIVE,  # For demo, auto-activate
             is_verified=False,
-            subscription_tier='free',
+            subscription_tier=SubscriptionTier.FREE,
             is_public_profile=True,
             show_portfolio=False,
             show_trading_activity=True,

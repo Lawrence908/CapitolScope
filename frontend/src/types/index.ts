@@ -106,6 +106,10 @@ export interface DataQualityStats {
   amount_ranges: Record<string, number>;
   party_distribution: Record<string, number>;
   chamber_distribution: Record<string, number>;
+  // Additional fields for enhanced data quality dashboard
+  null_ticker_count?: number;
+  null_amount_count?: number;
+  null_member_count?: number;
 }
 
 // Chart Data Types

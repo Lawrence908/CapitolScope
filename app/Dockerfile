@@ -54,11 +54,11 @@ COPY alembic/ /app/alembic/
 # Switch to non-root user
 USER appuser
 
-# Health check
+# Health check (use PORT with 8080 default for local runs)
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8000/health || exit 1
+    CMD sh -c 'curl -f http://localhost:${PORT:-8080}/health || exit 1'
 
-EXPOSE 8000
+EXPOSE 8080
 
-# Default command for production
-CMD ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"] 
+# Default command for production (Cloud Run provides $PORT)
+CMD ["sh", "-c", "python -m uvicorn main:app --host 0.0.0.0 --port ${PORT:-8080}"]

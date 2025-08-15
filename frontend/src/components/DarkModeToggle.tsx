@@ -8,13 +8,13 @@ const DarkModeToggle: React.FC = () => {
   return (
     <button
       onClick={toggleDarkMode}
-      className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors duration-200"
+      className="p-2 rounded-lg bg-bg-light-tertiary dark:bg-bg-tertiary hover:bg-bg-light-secondary dark:hover:bg-bg-secondary border border-primary-600/20 hover:border-primary-400/40 transition-all duration-300 shadow-glow-primary/20 hover:shadow-glow-primary/40"
       aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
     >
       {isDarkMode ? (
-        <SunIcon className="h-5 w-5 text-yellow-500" />
+        <SunIcon className="h-5 w-5 text-warning" />
       ) : (
-        <MoonIcon className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+        <MoonIcon className="h-5 w-5 text-primary-400" />
       )}
     </button>
   );

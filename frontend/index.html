@@ -2,13 +2,88 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    
+    <!-- Performance optimizations -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="CapitolScope - Congressional trading transparency platform" />
+    <meta name="theme-color" content="#1e293b" />
+    <meta name="color-scheme" content="dark light" />
+    
+    <!-- Preconnect to external domains for faster loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- DNS prefetch for API endpoints -->
+    <link rel="dns-prefetch" href="//localhost" />
+    <link rel="dns-prefetch" href="//chrislawrence.ca" />
+    
+    <!-- Resource hints for critical resources -->
+    <link rel="preload" href="/src/main.tsx" as="script" />
+    
+    <!-- Favicon - Maximum compatibility setup -->
+    <!-- Traditional ICO favicon for broad compatibility -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
+    <!-- Modern PNG favicons for different sizes -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon-64x64.png">
+    
+    <!-- Apple Touch Icon for iOS devices -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    
+    <!-- Android Chrome icon -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+    
     <title>CapitolScope - Congressional Trading Transparency</title>
+    
+    <!-- Critical CSS for above-the-fold content -->
+    <style>
+      /* Critical CSS for initial render */
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background-color: #0f172a;
+        color: #f1f5f9;
+      }
+      
+      #root {
+        min-height: 100vh;
+      }
+      
+      /* Loading spinner for Suspense fallbacks */
+      .loading-spinner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 16rem;
+      }
+      
+      .spinner {
+        width: 3rem;
+        height: 3rem;
+        border: 2px solid transparent;
+        border-top: 2px solid #3b82f6;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Initial loading state -->
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

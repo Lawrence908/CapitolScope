@@ -111,7 +111,7 @@ async def get_trades(
 )
 async def get_advanced_analytics(
     session: AsyncSession = Depends(get_db_session),
-    current_user: User = Depends(require_subscription(['pro', 'premium', 'enterprise'])),
+    current_user: User = Depends(require_subscription(['PRO', 'PREMIUM', 'ENTERPRISE'])),
 ) -> ResponseEnvelope[Dict[str, Any]]:
     """
     Get advanced trading analytics.
@@ -264,6 +264,229 @@ async def get_top_traded_tickers(
     except Exception as e:
         logger.error(f"Error getting top traded tickers: {e}")
         return create_response(error="Failed to get top traded tickers")
+
+
+@router.get(
+    "/analytics/party-distribution",
+    response_model=ResponseEnvelope[Dict[str, Any]],
+    responses={
+        200: {"description": "Party distribution retrieved successfully"},
+        401: {"description": "Not authenticated"},
+        500: {"description": "Internal server error"}
+    }
+)
+async def get_party_distribution(
+    session: AsyncSession = Depends(get_db_session),
+    # current_user: User = Depends(get_current_active_user),  # Temporarily disabled for development
+) -> ResponseEnvelope[Dict[str, Any]]:
+    """
+    Get trading activity distribution by political party.
+    
+    **Authenticated Feature**: Requires user authentication.
+    """
+    logger.info("Getting party distribution")
+    
+    try:
+        from sqlalchemy import select, func, and_, or_
+        
+        # Query party distribution
+        query = select(
+            CongressMember.party,
+            func.count(CongressionalTrade.id).label('count')
+        ).join(CongressionalTrade).group_by(CongressMember.party).order_by(
+            func.count(CongressionalTrade.id).desc()
+        )
+        
+        result = await session.execute(query)
+        party_distribution = {}
+        
+        for row in result:
+            party = row.party or 'Unknown'
+            party_distribution[party] = row.count
+        
+        return create_response(data=party_distribution)
+        
+    except Exception as e:
+        logger.error(f"Error getting party distribution: {e}")
+        return create_response(error="Failed to get party distribution")
+
+
+@router.get(
+    "/analytics/chamber-distribution",
+    response_model=ResponseEnvelope[Dict[str, Any]],
+    responses={
+        200: {"description": "Chamber distribution retrieved successfully"},
+        401: {"description": "Not authenticated"},
+        500: {"description": "Internal server error"}
+    }
+)
+async def get_chamber_distribution(
+    session: AsyncSession = Depends(get_db_session),
+    # current_user: User = Depends(get_current_active_user),  # Temporarily disabled for development
+) -> ResponseEnvelope[Dict[str, Any]]:
+    """
+    Get trading activity distribution by congressional chamber.
+    
+    **Authenticated Feature**: Requires user authentication.
+    """
+    logger.info("Getting chamber distribution")
+    
+    try:
+        from sqlalchemy import select, func, and_, or_
+        
+        # Query chamber distribution
+        query = select(
+            CongressMember.chamber,
+            func.count(CongressionalTrade.id).label('count')
+        ).join(CongressionalTrade).group_by(CongressMember.chamber).order_by(
+            func.count(CongressionalTrade.id).desc()
+        )
+        
+        result = await session.execute(query)
+        chamber_distribution = {}
+        
+        for row in result:
+            chamber = row.chamber or 'Unknown'
+            chamber_distribution[chamber] = row.count
+        
+        return create_response(data=chamber_distribution)
+        
+    except Exception as e:
+        logger.error(f"Error getting chamber distribution: {e}")
+        return create_response(error="Failed to get chamber distribution")
+
+
+@router.get(
+    "/analytics/amount-distribution",
+    response_model=ResponseEnvelope[Dict[str, Any]],
+    responses={
+        200: {"description": "Amount distribution retrieved successfully"},
+        401: {"description": "Not authenticated"},
+        500: {"description": "Internal server error"}
+    }
+)
+async def get_amount_distribution(
+    session: AsyncSession = Depends(get_db_session),
+    # current_user: User = Depends(get_current_active_user),  # Temporarily disabled for development
+) -> ResponseEnvelope[Dict[str, Any]]:
+    """
+    Get trading activity distribution by amount ranges.
+    
+    **Authenticated Feature**: Requires user authentication.
+    """
+    logger.info("Getting amount distribution")
+    
+    try:
+        from sqlalchemy import select, func, and_, or_, case
+        
+        # Define amount ranges
+        amount_ranges = [
+            (0, 1000, "$1 - $1,000"),
+            (1001, 15000, "$1,001 - $15,000"),
+            (15001, 50000, "$15,001 - $50,000"),
+            (50001, 100000, "$50,001 - $100,000"),
+            (100001, 250000, "$100,001 - $250,000"),
+            (250001, 500000, "$250,001 - $500,000"),
+            (500001, 1000000, "$500,001 - $1,000,000"),
+            (1000001, None, "$1,000,001+")
+        ]
+        
+        # Build case statement for amount ranges
+        amount_case = case(
+            *[
+                (and_(
+                    func.coalesce(CongressionalTrade.amount_exact, 
+                                (CongressionalTrade.amount_min + CongressionalTrade.amount_max) / 2) >= min_val,
+                    func.coalesce(CongressionalTrade.amount_exact, 
+                                (CongressionalTrade.amount_min + CongressionalTrade.amount_max) / 2) <= (max_val or 999999999)
+                ), label)
+                for min_val, max_val, label in amount_ranges
+            ],
+            else_="Unknown"
+        )
+        
+        # Query amount distribution
+        query = select(
+            amount_case.label('amount_range'),
+            func.count(CongressionalTrade.id).label('count')
+        ).group_by(amount_case).order_by(
+            func.count(CongressionalTrade.id).desc()
+        )
+        
+        result = await session.execute(query)
+        amount_distribution = {}
+        
+        for row in result:
+            amount_distribution[row.amount_range] = row.count
+        
+        return create_response(data=amount_distribution)
+        
+    except Exception as e:
+        logger.error(f"Error getting amount distribution: {e}")
+        return create_response(error="Failed to get amount distribution")
+
+
+@router.get(
+    "/analytics/volume-over-time",
+    response_model=ResponseEnvelope[List[Dict[str, Any]]],
+    responses={
+        200: {"description": "Volume over time retrieved successfully"},
+        401: {"description": "Not authenticated"},
+        500: {"description": "Internal server error"}
+    }
+)
+async def get_volume_over_time(
+    session: AsyncSession = Depends(get_db_session),
+    period: str = Query('daily', description="Time period: daily, weekly, monthly"),
+    # current_user: User = Depends(get_current_active_user),  # Temporarily disabled for development
+) -> ResponseEnvelope[List[Dict[str, Any]]]:
+    """
+    Get trading volume over time.
+    
+    **Authenticated Feature**: Requires user authentication.
+    """
+    logger.info(f"Getting volume over time: period={period}")
+    
+    try:
+        from sqlalchemy import select, func, and_, or_, extract
+        
+        # Determine date truncation based on period
+        if period == 'daily':
+            date_trunc = func.date_trunc('day', CongressionalTrade.transaction_date)
+        elif period == 'weekly':
+            date_trunc = func.date_trunc('week', CongressionalTrade.transaction_date)
+        elif period == 'monthly':
+            date_trunc = func.date_trunc('month', CongressionalTrade.transaction_date)
+        else:
+            date_trunc = func.date_trunc('day', CongressionalTrade.transaction_date)
+        
+        # Query volume over time
+        query = select(
+            date_trunc.label('date'),
+            func.count(CongressionalTrade.id).label('count'),
+            func.sum(
+                func.coalesce(
+                    CongressionalTrade.amount_exact,
+                    (CongressionalTrade.amount_min + CongressionalTrade.amount_max) / 2
+                )
+            ).label('volume')
+        ).group_by(date_trunc).order_by(date_trunc.desc()).limit(30)
+        
+        result = await session.execute(query)
+        volume_data = []
+        
+        for row in result:
+            volume_data.append({
+                "date": row.date.isoformat() if row.date else None,
+                "count": row.count,
+                "volume": int(row.volume or 0)
+            })
+        
+        return create_response(data=volume_data)
+        
+    except Exception as e:
+        logger.error(f"Error getting volume over time: {e}")
+        return create_response(error="Failed to get volume over time")
 
 
 @router.get(

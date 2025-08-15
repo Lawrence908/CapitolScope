@@ -108,7 +108,7 @@ async def get_intraday_prices(
     symbol: str = Query(..., description="Stock symbol"),
     date: Optional[date] = Query(None, description="Specific date (defaults to today)"),
     interval: str = Query("1min", description="Time interval (1min, 5min, 15min, 1hour)"),
-    current_user: User = Depends(require_subscription(['pro', 'premium', 'enterprise'])),
+    current_user: User = Depends(require_subscription(['PRO', 'PREMIUM', 'ENTERPRISE'])),
 ) -> ResponseEnvelope[Dict[str, Any]]:
     """
     Get intraday price data for a security.
@@ -290,7 +290,7 @@ async def get_economic_indicators(
     category: Optional[str] = Query(None, description="Filter by category"),
     date_from: Optional[date] = Query(None, description="Start date"),
     date_to: Optional[date] = Query(None, description="End date"),
-    current_user: User = Depends(require_subscription(['premium', 'enterprise'])),
+    current_user: User = Depends(require_subscription(['PREMIUM', 'ENTERPRISE'])),
 ) -> ResponseEnvelope[PaginatedResponse[Dict[str, Any]]]:
     """
     Get economic indicators data.
